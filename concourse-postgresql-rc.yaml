@@ -8,6 +8,7 @@ spec:
     metadata:
       labels:
         name: concourse-postgresql
+        app: concourse
     spec:
       containers:
       - name: concourse-postgresql

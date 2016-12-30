@@ -8,6 +8,7 @@ spec:
     metadata:
       labels:
         name: concourse-web
+        app: concourse
     spec:
       containers:
       - name: concourse-web
@@ -24,8 +25,8 @@ spec:
             secretKeyRef:
               name: concourse-secrets
               key: basic-auth-password
-        - name: CONCOURSE_EXTERNAL_URL
-          value: http://concourse.periscopedata.com:8080
+        # - name: CONCOURSE_EXTERNAL_URL
+        #   value: http://concourse.periscopedata.com:8080
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -60,4 +61,3 @@ spec:
             path: authorized_worker_keys
           - key: session-signing-key
             path: session_signing_key
-

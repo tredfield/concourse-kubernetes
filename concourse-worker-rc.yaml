@@ -8,6 +8,7 @@ spec:
     metadata:
       labels:
         name: concourse-worker
+        app: concourse
     spec:
       containers:
       - name: concourse-worker
@@ -22,7 +23,8 @@ spec:
               name: concourse-secrets
               key: basic-auth-username
         - name: CONCOURSE_TSA_HOST
-          value: $(CONCOURSE_WEB_SERVICE_HOST):$(CONCOURSE_WEB_SERVICE_PORT)
+          value: $(CONCOURSE_WEB_SERVICE_HOST)
+          # value: $(CONCOURSE_WEB_SERVICE_HOST):$(CONCOURSE_WEB_SERVICE_PORT)
         volumeMounts:
         - name: concourse-secrets
           mountPath: /concourse-keys
