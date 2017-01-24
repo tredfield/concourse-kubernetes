@@ -12,6 +12,10 @@ spec:
     spec:
       containers:
       - name: concourse-postgresql
+        resources:
+          requests:
+            cpu: 2
+            memory: 4Gi
         image: postgres:9.5
         env:
         - name: POSTGRES_DB

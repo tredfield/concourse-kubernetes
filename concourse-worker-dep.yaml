@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: concourse-worker
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -12,6 +12,10 @@ spec:
     spec:
       containers:
       - name: concourse-worker
+        resources:
+          requests:
+            cpu: 4
+            memory: 12Gi
         image: concourse/concourse
         args: ['worker']
         securityContext:

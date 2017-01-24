@@ -12,6 +12,10 @@ spec:
     spec:
       containers:
       - name: concourse-web
+        resources:
+          requests:
+            cpu: 2
+            memory: 8Gi
         image: concourse/concourse
         args: ['web']
         env:
