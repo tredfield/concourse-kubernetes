@@ -15,24 +15,16 @@ The worker and/or web pod can be scaled by increasing the replication value in t
 
 The services must be created before Deployments so that the Pods are registered with the appropriate environment variables (for the Services).
 
+## Prerequisites
+- kubectl configured
+- concourse-ci service account created in Kubernetes
 
 ## Step-by-step guide
 - Clone this repo and change directory into where it was cloned
-- Update concourse-secrets.yaml accordingly but do not commit. Create new keys and update concourse-secrets.yaml following these steps:
-  1. Create tsa-host-key:
-    `ssh-keygen -t rsa -f tsa_host_key -N ''`
-    - In concourse-secrets.yaml update tsa-host-key with contents of tsa_host_key file.
-  2. Create session signing key:
-    `ssh-keygen -t rsa -f session_signing_key -N ''`
-    - Copy the contents of session_signing_key file to session-signing-key field in concourse-secrets.yaml
-  3. Create worker key:
-    `ssh-keygen -t rsa -f worker_key -N ''`
-    - Copy the contents of worker_key file to tsa-worker-private-key field in concourse-secrets.yaml
-  4. Copy the contents of tsa-public-key.pub to tsa-public-key field.
-  5. Copy the contents of worker_key.pub to tsa-authorized-keys field.
-- Create Secrets with command:
-`kubectl apply -f concourse-secrets.yaml`
-- Create Services with command:
-`for f in *-svc.yaml; do kubectl apply -f $f; done`
-- Create Deployments with command:
-`for f in *-dep.yaml; do kubectl apply -f $f; done`
+- Create environment variables for kubectl server, concourse-ci token, and ca.cert from concourse-ci service account:
+  - `export KUBE_SERVER=<url to k8s server>`
+  - `export KUBE_CA_DATA=<ca.cert>`
+  - `export KUBE_CA_TOKEN=<concourse-ci service account token>`
+- Run the docker commands:
+  - `docker build -t deploy-concourse .`
+  - `docker run -e KUBE_CA_DATA -e KUBE_CA_TOKEN -e KUBE_SERVER deploy-concourse`
