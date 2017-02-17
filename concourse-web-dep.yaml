@@ -29,8 +29,8 @@ spec:
             secretKeyRef:
               name: concourse-secrets
               key: basic-auth-password
-        # - name: CONCOURSE_EXTERNAL_URL
-        #   value: http://concourse.periscopedata.com:8080
+        - name: CONCOURSE_EXTERNAL_URL
+          value: http://ci.int.dev00.scpdev.net:8080
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
