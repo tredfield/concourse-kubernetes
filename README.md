@@ -1,7 +1,5 @@
 # concourse-kubernetes
 
-A simple Kubernetes implementation of the official Concourse [docker-compose.yml](https://concourse.ci/docker-repository.html).
-
 This page describes how to deploy Concourse to a Kubernetes cluster.
 
 Deploying Concourse in Kubernetes establishes the following:
@@ -15,16 +13,22 @@ The worker and/or web pod can be scaled by increasing the replication value in t
 
 The services must be created before Deployments so that the Pods are registered with the appropriate environment variables (for the Services).
 
-## Prerequisites
-- kubectl configured
-- concourse-ci service account created in Kubernetes
+# Step-by-step guide
+1 Clone repo ci-concourse and change directory into ci-concourse/k8s
+2 The concourse-ci service account must first be created, see Create k8s Service Account.
+3 Run Docker image using:
+  - Option 1
+    - Create environment variables for concourse-ci service account:
+      KUBE_SERVER   # url to k8s server
+      KUBE_CA_DATA  # ca.cert
+      KUBE_CA_TOKEN  # concourse-ci service account token
+      KUBE_NAMESPACE # namespace to deploy concourse
+    - Run the docker commands:
+      `docker build -t deploy-concourse .
+      docker run -e KUBE_CA_DATA -e KUBE_CA_TOKEN -e KUBE_SERVER -e KUBE_NAMESPACE deploy-concourse`
 
-## Step-by-step guide
-- Clone this repo and change directory into where it was cloned
-- Create environment variables for kubectl server, concourse-ci token, and ca.cert from concourse-ci service account:
-  - `export KUBE_SERVER=<url to k8s server>`
-  - `export KUBE_CA_DATA=<ca.cert>`
-  - `export KUBE_CA_TOKEN=<concourse-ci service account token>`
-- Run the docker commands:
-  - `docker build -t deploy-concourse .`
-  - `docker run -e KUBE_CA_DATA -e KUBE_CA_TOKEN -e KUBE_SERVER deploy-concourse`
+  - Option 2
+    - Assure kubectl is configured to correct kubernetes environment that should be used to retrieve the concourse-ci service account ca.cert and token.
+    - Default KUBE_SERVER is set to https://tectonic-k8s.ext.dev00.scpdev.net:443, export KUBE_SERVER and KUBE_NAMESPACE to override
+    - Run command
+      `./docker-deploy-concourse.sh`
